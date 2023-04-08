@@ -19,7 +19,7 @@ public class cardHolder
     }
 
     public string getNum() => cardNum;
-    public string getFirstName() => lastName;
+    public string getFirstName() => firstName;
     public string getLastName() => lastName;
     public int getPin() => pin;
     public double getBalance() => balance;
@@ -72,6 +72,8 @@ public class cardHolder
             Console.WriteLine("current balance is: " + currentUser.getBalance());
         }
 
+        
+
         List < cardHolder > cardHolders = new List<cardHolder>();
         cardHolders.Add(new cardHolder("3224324", 4321, "Ake", "Nathan", 150.24));
         cardHolders.Add(new cardHolder("2343242", 1234, "De Bruyne", "Kevin", 122.12));
@@ -80,12 +82,57 @@ public class cardHolder
         cardHolders.Add(new cardHolder("11209832", 9271, "Marley", "Bob", 17121.42));
         cardHolders.Add(new cardHolder("11224111", 8710, "Green", "John", 21321.23));
 
+        void addNewcardHolder(string cardNum, int pin, string firstName, string lastName, double balance)
+        {
+            cardHolders.Add(new cardHolder(cardNum, pin, firstName, lastName, balance));
+        }
+
         Console.WriteLine("Welcome to SimpleATM");
-        Console.WriteLine("Please insert your debit card: ");
+        Console.WriteLine("Do you have an account?");
+        string loginOptions = Console.ReadLine();
         String debitCardNum = "";
         cardHolder currentUser;
+        int option = 0;
 
-        while(true)
+        if (loginOptions == "no")
+        { 
+        
+                Console.WriteLine("Enter a new card number: ");
+                 string newCardNumber = Console.ReadLine();
+                Console.WriteLine("Enter a new pin number: ");
+                int newPin = int.Parse(Console.ReadLine());
+                Console.WriteLine("Enter your last name: ");
+                string newLastName = Console.ReadLine();
+                Console.WriteLine("Enter your first name: ");
+                string newFirstName = Console.ReadLine();
+                Console.WriteLine("Make an initial deposit: ");
+                double initialBalance = Double.Parse(Console.ReadLine());
+                addNewcardHolder(newCardNumber, newPin, newFirstName, newLastName, initialBalance);
+                Console.WriteLine("Your account has now been created");
+                printOptions();
+            } 
+        
+
+        if (loginOptions == "yes")
+        {
+            printOptions();
+            try
+            {
+                Console.WriteLine("Please insert your debit card: ");
+
+                debitCardNum = Console.ReadLine();
+                // check against our db
+                currentUser = cardHolders.FirstOrDefault(a => a.cardNum == debitCardNum);
+                
+            }
+            catch
+            {
+                Console.WriteLine("Card not recognized. Please try again");
+
+            }
+        }
+
+          while(true)
         {
             try
             {
@@ -101,6 +148,10 @@ public class cardHolder
 
             }
         }
+
+
+   
+    
 
         Console.WriteLine("Please enter your pin: ");
         int userPin = 0;
@@ -121,7 +172,7 @@ public class cardHolder
         }
         Console.WriteLine("Welcome " + currentUser.getFirstName());
 
-        int option = 0;
+ 
         do
         {
             printOptions();
